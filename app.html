@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000"/>
+    <meta name="apple-mobile-web-app-title" content="offline-plugin"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <link rel="apple-touch-icon" href="./images/apple-touch-icon.png"/>
+    <link rel="icon" href="./images/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css?v=0.0.1">
+    <title>Web3 PWA App</title>
+</head>
+<body>
+    <div id="box">
+        <h1 id="title">Thank You For Installing The dApp</h1>
+        <p id="funding">A new address has been generated, please fund this wallet with some Goerli testnet ETH</p>
+        <div id="address"></div>
+        <p>You can export the private key to your account and back it up on Metamask, restore an existing wallet using a private key or generate a new wallet address</p>
+        <button id="export-key">EXPORT</button> <button id="restore-key">RESTORE</button> <button id="new-key">NEW</button>
+    </div>
+
+    <script type="module">
+        import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js";
+  
+        const generateAddress = async () => {
+            let tmpWallet;
+            if (localStorage.privateKey) {
+                tmpWallet = new ethers.Wallet(localStorage.privateKey);
+            } else {
+                tmpWallet = ethers.Wallet.createRandom();
+                localStorage.setItem("privateKey", tmpWallet.privateKey); // insecure?
+            }
+            document.getElementById('address').innerHTML = tmpWallet.address;
+        }
+        generateAddress();
+
+        const exportKey = async () => {
+            prompt("Your Private Key", localStorage.privateKey);
+        }
+        document.getElementById('export-key').onclick = exportKey;
+
+        const restoreKey = async () => {
+            const pk = prompt('Enter a private key');
+            const testingWallet = new ethers.Wallet(pk);
+            localStorage.setItem("privateKey", pk);
+            generateAddress();
+        }
+        document.getElementById('restore-key').onclick = restoreKey;
+
+        const newKey = async () => {
+            localStorage.removeItem("privateKey");
+            generateAddress();
+        }
+        document.getElementById('new-key').onclick = newKey;
+
+        const checkBalance = async () => {
+            const tmpWallet = new ethers.Wallet(localStorage.privateKey);
+            const provider = new ethers.JsonRpcProvider('https://rpc.ankr.com/eth_goerli'); // use private RPC in production
+            const balanceInWei = await provider.getBalance(tmpWallet.address);
+            console.log(balanceInWei);
+            if (balanceInWei > 0n) {
+                document.getElementById('title').innerHTML = 'Your Account Is Funded! Payment Received';
+                document.getElementById('funding').innerHTML = 'If you want those testnet funds back you should export your private key';
+            } else {
+                setTimeout(() => checkBalance(), 5000);
+            }
+        }
+        checkBalance();
+
+      </script>
+
+</body>
+</html>

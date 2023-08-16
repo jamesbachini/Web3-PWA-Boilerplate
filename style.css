@@ -1,0 +1,44 @@
+body {
+    background-color: #222;
+    color: #EEE;
+    font-family: 'Poppins', sans-serif;
+}
+  
+h1 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+button {
+    width: 90px;
+    height: 30px;
+    border: 2px solid #CCC;
+    border-radius: 3px;
+    background: #FFF;
+    color: #222;
+    cursor: pointer;
+    margin: 3px;
+}
+
+input[type=text] {
+    width: 180px;
+    height: 24px;
+}
+     
+a {
+    color: #CCC;
+}
+
+#box {
+    margin: 20% 2% 20% 2%;
+    border: 2px solid #000;
+    border-radius: 5px;
+    background: #333;
+    padding: 2%;
+}
+
+#address {
+    font-size: 11px;
+    font-style: italic;
+    color: #CFF;
+}

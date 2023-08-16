@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000"/>
+    <meta name="apple-mobile-web-app-title" content="offline-plugin"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <link rel="apple-touch-icon" href="./images/apple-touch-icon.png"/>
+    <link rel="icon" href="./images/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css?v=0.0.1">
+    <title>Web3 PWA</title>
+</head>
+<body>
+
+    <div id="box">
+        <h1>Add To Home Screen</h1>
+        <p>To install the app, you need to add this website to your mobile home screen.</p>
+        <p id="instructions"></p>
+    </div>
+
+<script>
+    const instructions = {
+        safari: `In your browser tap the "Share" icon and choose "Add to Home Screen" then "Add" to confirm. Open the app from the homescreen or app list`,
+        chrome: `In your Chrome browser menu "⋮", tap the "Install App". Then open the app icon from your home screen or app list.`,
+        other: `Please install this App on your home page using your mobile device. Recommended browsers iPhone Safari, Android Chrome`,
+    }
+    const ua = navigator.userAgent.toLowerCase();
+    if (ua.includes('iphone') || ua.includes('ipad')) {
+        document.getElementById('instructions').innerHTML = instructions.safari;
+    } else if (ua.includes('android')) {
+        document.getElementById('instructions').innerHTML = instructions.chrome;
+    } else {
+        document.getElementById('instructions').innerHTML = instructions.other;
+    }
+</script>
+
+
+</body>
+</html>
